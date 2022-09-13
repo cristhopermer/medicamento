@@ -1,1 +1,2 @@
-001, casa, Pastilla, 14, oral, 4
+c001, acetominocren, Pastilla, 12, oral, 1
+c002, pedialite, Liquido, 12, oral, 1

@@ -18,12 +18,13 @@ public class Procesadorarchivo {
         int pos = 0;
 
         try {
-            FileReader f = new FileReader("C:\\Users\\crist\\Documentos\\NetBeansProjects\\GestienMedicamentos\\Farmacia.txt");
+            FileReader f = new FileReader("C:\\Users\\crist\\OneDrive\\Escritorio\\GestienMedicamentos\\Farmacia.txt");
             BufferedReader b = new BufferedReader(f);
 
             while ((contenidoArchivo = b.readLine()) != null) {
                 this.basedatos[pos] = contenidoArchivo;
                 pos++;
+                System.out.print(contenidoArchivo);
             }
         } catch (FileNotFoundException ex) {
             throw new Exception(ex.getMessage());
@@ -37,13 +38,13 @@ public class Procesadorarchivo {
             for (int x = 0; x < listaMedicamentos.size(); x++) {
                  Medicamentos lm =listaMedicamentos.get(x);
                  b.write(lm.getMedicamentos()+System.lineSeparator());
-                 System.out.print(listaMedicamentos.size());
-                 System.out.print(lm.getMedicamentos());
+                 
             }
             b.close();
         } catch (FileNotFoundException ex) {
             throw new Exception(ex.getMessage());
         }      
+   
     }
     public String[] recuperarContenido() {
         return this.basedatos;

@@ -18,6 +18,7 @@ public final class GestionMedicamento extends javax.swing.JFrame {
         crearTablaPC();
         llenarTablaNC();
         crearTablaNC(dtmNC);
+        Mc.agregarMedicamentos(Mc.getMedicamentos());
         
     }
 
@@ -224,6 +225,11 @@ public final class GestionMedicamento extends javax.swing.JFrame {
         jScrollPane1.setViewportView(Tliquidos);
 
         jButton1.setText("<<");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("<<");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -307,7 +313,15 @@ public final class GestionMedicamento extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+
+    int x =Tliquidos.getSelectedRow();
+        String codigo=dtmLJ.getValueAt(x, 0).toString();
+        Medicamentos m = Mc.consultarMedicamentos(codigo,Mc.getMedicamentosLJ());
+        Mc.getMedicamentos().add(m);
+        Mc.eliminarMedicamentos(m,Mc.getMedicamentosLJ());
+        llenarTablaNC();
+        llenarTablaLJ(Mc.getMedicamentosLJ(),dtmLJ);
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -317,16 +331,17 @@ public final class GestionMedicamento extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-   
-        Procesadorarchivo pa=new Procesadorarchivo();
-   
+  
+        Procesadorarchivo pa=new Procesadorarchivo();  
+        Medicamentos Medicamentos =new Medicamentos ();
+        
         Medicamentos.setCodigo(ccodigo.getText());
         Medicamentos.setDosis(cdosis.getText());
         Medicamentos.setFechaC(cfechaC.getText());
         Medicamentos.setForma(cforma.getSelectedItem().toString());
         Medicamentos.setNombre(cnombre.getText());
         Medicamentos.setViaconsumo(cviaCon.getText());
-        Mc.AgregarMedicamentos(Medicamentos);
+        Mc.getMedicamentos().add(Medicamentos);
           
         try {
             pa.GuardarMedicamento(Mc.getMedicamentos());
@@ -355,20 +370,32 @@ public final class GestionMedicamento extends javax.swing.JFrame {
 
         int x =jTable1.getSelectedRow();
         String codigo=dtmNC.getValueAt(x, 0).toString();
-        Medicamentos m = Mc.consultar(codigo);
-        if (m.getForma().equals("pastilla")||(m.getForma().equals("Capsula"))) {
-            Mc.getMedicamentos().add(m);
-            Mc.eliminarMedicamentos(m);
-            llenarTablaPC(Mc.getMedicamentos(), dtmPC);
+        Medicamentos m = Mc.consultarMedicamentos(codigo,Mc.getMedicamentos());
+        if (m.getForma().equals("Pastilla")||(m.getForma().equals("Capsula"))) {
+            Mc.getMedicamentosPC().add(m);
+            Mc.eliminarMedicamentos(m,Mc.getMedicamentos());
+            llenarTablaPC(Mc.getMedicamentosPC(), dtmPC);
+            System.out.print(Mc.getMedicamentosPC().size());
         }
         if (m.getForma().equals("Liquido")||(m.getForma().equals("Jarabe"))){
-            Mc.getMedicamentos().add(m);
-            Mc.eliminarMedicamentos(m);
-            llenarTablaLJ(Mc.getMedicamentos(), dtmLJ);
+            Mc.getMedicamentosLJ().add(m);
+            Mc.eliminarMedicamentos(m,Mc.getMedicamentos());
+            llenarTablaLJ(Mc.getMedicamentosLJ(), dtmLJ);
         }
-        llenarTablaLJ(Mc.getMedicamentos(), dtmNC);
+        llenarTablaNC();
 
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        int x =Tpastillas.getSelectedRow();
+        String codigo=dtmPC.getValueAt(x, 0).toString();
+        Medicamentos m = Mc.consultarMedicamentos(codigo,Mc.getMedicamentosPC());
+        Mc.getMedicamentos().add(m);
+        Mc.eliminarMedicamentos(m,Mc.getMedicamentosPC());
+        llenarTablaNC();
+        llenarTablaPC(Mc.getMedicamentosPC(),dtmPC);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void llenarCampos(Medicamentos m){
         ccodigo.setText(m.getCodigo());
@@ -389,6 +416,8 @@ public final class GestionMedicamento extends javax.swing.JFrame {
         });
     }
     public void llenarTablaNC (){ 
+        
+        dtmNC.setNumRows(0);
         for(int i=0;i<Mc.getMedicamentos().size(); i++){
             Medicamentos m=(Medicamentos) Mc.getMedicamentos().get(i);
             String[]fila = {m.getCodigo(),m.getNombre()};
@@ -403,8 +432,8 @@ public final class GestionMedicamento extends javax.swing.JFrame {
     
     public void llenarTablaPC (Vector<Medicamentos> meve,DefaultTableModel d){
         dtmPC.setNumRows(0);
-        for(int i=0;i<Mc.getMedicamentos().size(); i++){
-            Medicamentos m=(Medicamentos) Mc.getMedicamentos().get(i);
+        for(int i=0;i<Mc.getMedicamentosPC().size(); i++){
+            Medicamentos m=(Medicamentos) Mc.getMedicamentosPC().get(i);
             String[]fila = {m.getCodigo(),m.getNombre(),m.getViaconsumo(),m.getDosis(),m.getFechaC(),m.getForma()};
             dtmPC.addRow(fila);
         }      
@@ -419,8 +448,8 @@ public final class GestionMedicamento extends javax.swing.JFrame {
     }
     public void llenarTablaLJ (Vector<Medicamentos> meve,DefaultTableModel d){
         dtmLJ.setNumRows(0);
-        for(int i=0;i<Mc.getMedicamentos().size(); i++){
-            Medicamentos m=(Medicamentos) Mc.getMedicamentos().get(i);
+        for(int i=0;i<Mc.getMedicamentosLJ().size(); i++){
+            Medicamentos m=(Medicamentos) Mc.getMedicamentosLJ().get(i);
             String[]fila = {m.getCodigo(),m.getNombre(),m.getViaconsumo(),m.getDosis(),m.getFechaC(),m.getForma()};
             dtmLJ.addRow(fila);
         }   
@@ -439,7 +468,7 @@ public final class GestionMedicamento extends javax.swing.JFrame {
     public static DefaultTableModel dtmLJ = new DefaultTableModel();
     public static DefaultTableModel dtmPC= new DefaultTableModel();
     public static MedicamentosController Mc= new MedicamentosController();
-    public static Medicamentos Medicamentos =new Medicamentos ();
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Tliquidos;
