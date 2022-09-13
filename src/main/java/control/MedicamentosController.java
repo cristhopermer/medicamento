@@ -1,6 +1,9 @@
 package control;
 
+import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import manejadorarchivos.Procesadorarchivo;
 import modelo.Medicamentos;
 
@@ -8,19 +11,32 @@ public class MedicamentosController {
     private Vector<Medicamentos>medicamentos = new Vector ();
     private Vector<Medicamentos>medicamentosPC = new Vector ();
     private Vector<Medicamentos>medicamentosLJ = new Vector ();
+    private List<String> baseDatos;
 
    
     public void agregarMedicamentos(Vector<Medicamentos>am){
         Procesadorarchivo pa= new Procesadorarchivo();
-        System.out.print("s");
         try{
             pa.LeerDatos();
-            System.out.print(pa.recuperarContenido());
+            baseDatos=(pa.recuperarContenido());
+            cargarNombresDesdeBaseDatos(am);
         }catch(Exception ex) {
-           
+           Logger.getLogger(Procesadorarchivo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    public void cargarNombresDesdeBaseDatos(Vector<Medicamentos>am){
+        
+        String[] dato;
+        for (int i=0; i < this.baseDatos.size(); i++ ){
+            if (this.baseDatos.get(i) != null){
+                String renglon = this.baseDatos.get(i);
+                dato = renglon.split(",");
+                am.add(new Medicamentos(dato[0],dato[1],dato[2],dato[3],dato[4],dato[5]));
+                System.out.print(new Medicamentos(dato[0],dato[1],dato[2],dato[3],dato[4],dato[5]));
+                }
+            }
+        }
+    
     public  Medicamentos consultarMedicamentos(String c,Vector<Medicamentos>vm){
         Medicamentos me=null;
         for (int i=0; i <vm.size(); i ++){
@@ -31,6 +47,7 @@ public class MedicamentosController {
         }
         return me;
     }
+    
     public void eliminarMedicamentos (Medicamentos m,Vector<Medicamentos>vm){  
         vm.remove(m);
     }

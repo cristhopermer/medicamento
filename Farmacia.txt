@@ -1,2 +1,4 @@
-c001, acetominocren, Pastilla, 12, oral, 1
-c002, pedialite, Liquido, 12, oral, 1
+c001,   acetominocren,   Pastilla,   12,   oral,   1
+c002,   pedialite,   Liquido,   12,   oral,   1
+C001,  acedsadsa,  Pastilla,  asd,  asdasad,  asdas
+as, , Pastilla, , , 

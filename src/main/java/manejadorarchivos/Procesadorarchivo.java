@@ -7,24 +7,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import modelo.Medicamentos;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 public class Procesadorarchivo {
     
   
-    private String[] basedatos;
+    private List<String> basedatos = new ArrayList<String>();
     
     public void LeerDatos() throws IOException, Exception {
         String contenidoArchivo;
         int pos = 0;
 
         try {
-            FileReader f = new FileReader("C:\\Users\\crist\\OneDrive\\Escritorio\\GestienMedicamentos\\Farmacia.txt");
+            FileReader f = new FileReader("Farmacia.txt");
             BufferedReader b = new BufferedReader(f);
 
             while ((contenidoArchivo = b.readLine()) != null) {
-                this.basedatos[pos] = contenidoArchivo;
+                this.basedatos.add(contenidoArchivo);
                 pos++;
-                System.out.print(contenidoArchivo);
             }
         } catch (FileNotFoundException ex) {
             throw new Exception(ex.getMessage());
@@ -43,10 +44,11 @@ public class Procesadorarchivo {
             b.close();
         } catch (FileNotFoundException ex) {
             throw new Exception(ex.getMessage());
-        }      
+        }     
+        
    
     }
-    public String[] recuperarContenido() {
+    public List<String> recuperarContenido() {
         return this.basedatos;
     }
 

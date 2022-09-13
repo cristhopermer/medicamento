@@ -13,12 +13,14 @@ import manejadorarchivos.Procesadorarchivo;
 public final class GestionMedicamento extends javax.swing.JFrame {  
 
     public GestionMedicamento() {
-        initComponents(); 
+        initComponents();
+        crearTablaNC(dtmNC);
         crearTablaLJ();
         crearTablaPC();
-        llenarTablaNC();
-        crearTablaNC(dtmNC);
         Mc.agregarMedicamentos(Mc.getMedicamentos());
+        llenarTablaNC();
+        
+        
         
     }
 
@@ -418,12 +420,17 @@ public final class GestionMedicamento extends javax.swing.JFrame {
     public void llenarTablaNC (){ 
         
         dtmNC.setNumRows(0);
+    
+    
         for(int i=0;i<Mc.getMedicamentos().size(); i++){
             Medicamentos m=(Medicamentos) Mc.getMedicamentos().get(i);
             String[]fila = {m.getCodigo(),m.getNombre()};
             dtmNC.addRow(fila);
+            
+            
         }      
     } 
+    
     public void crearTablaNC(DefaultTableModel d){
         dtmNC.addColumn("Codigo");
         dtmNC.addColumn("Nombre");
@@ -468,6 +475,7 @@ public final class GestionMedicamento extends javax.swing.JFrame {
     public static DefaultTableModel dtmLJ = new DefaultTableModel();
     public static DefaultTableModel dtmPC= new DefaultTableModel();
     public static MedicamentosController Mc= new MedicamentosController();
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
